@@ -5,7 +5,7 @@ import { query } from './db';
 
 const quickAuthClient = createClient();
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Missing token' });
