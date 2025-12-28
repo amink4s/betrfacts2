@@ -1,0 +1,33 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjQ3NzEyNiwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDIxOGE5YjU4QjkyOWRCRDBEOTEzMkFENEZlYzBkRkRCNzkyNDUyYkQifQ",
+    "payload": "eyJkb21haW4iOiJiZXRyLWZhY3RzLnZlcmNlbC5hcHAifQ",
+    "signature": "qFxJyuITBqEeG7tHedgU6kD7CDF+dLkTtlU/UScgDPx3K1Fc2lDC6Kkl6V3mXq9gf/ccCmg9kEabQ8WLa43lVhs="
+  },
+    "frame": {
+        "name": "BetrFacts",
+        "version": "1",
+        "iconUrl": "https://betrfacts.vercel.app/icon.png",
+        "homeUrl": "https://betrfacts.vercel.app",
+        "imageUrl": "https://betrfacts.vercel.app/image.png",
+        "buttonTitle": "BetrFacts",
+        "splashImageUrl": "https://betrfacts.vercel.app/splash.png",
+        "splashBackgroundColor": "#000000",
+        "webhookUrl": "https://betrfacts.vercel.app/api/webhook",
+        "subtitle": "betrmint rounds facts",
+        "description": "facts about the betrmint rounds provided by the community",
+        "primaryCategory": "utility",
+        "tagline": "betrmint rounds facts",
+        "screenshotUrls": [
+          "https://betrfacts.vercel.app/screenshot1.png"
+        ],
+        "heroImageUrl": "https://betrfacts.vercel.app/image.png",
+        "tags": [
+          "betrmint",
+          "facts"
+        ],
+        "ogTitle": "BetrFacts betrmint round facts",
+        "ogDescription": "facts about the betrmint rounds provided by the community",
+        "ogImageUrl": "https://betrfacts.vercel.app/image.png"
+    }
+  }
