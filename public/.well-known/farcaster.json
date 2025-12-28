@@ -26,7 +26,7 @@
           "betrmint",
           "facts"
         ],
-        "ogTitle": "betr-facts betrmint round facts",
+        "ogTitle": "betrfacts betrmint round facts",
         "ogDescription": "facts about the betrmint rounds provided by the community",
         "ogImageUrl": "https://betr-facts.vercel.app/image.png"
     }
