@@ -1,4 +1,4 @@
-import { query } from './db';
+import { query } from './db.mjs';
 
 export default async function handler(_req: any, res: any) {
   try {
