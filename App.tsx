@@ -8,6 +8,8 @@ import ContributeModal from './components/ContributeModal';
 import { User, BetrRound } from './types';
 import { sdk } from '@farcaster/miniapp-sdk';
 
+const BACKEND_ORIGIN = 'http://localhost:4000';
+
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null); // No default user
   const [rounds, setRounds] = useState<BetrRound[]>([]); // No default rounds
@@ -15,7 +17,14 @@ const App: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    sdk.actions.ready();
+    (async () => {
+      const res = await sdk.quickAuth.fetch(`${BACKEND_ORIGIN}/me`);
+      if (res.ok) {
+        const userData = await res.json();
+        setUser(userData);
+      }
+      sdk.actions.ready();
+    })();
   }, []);
 
   const handleLogin = () => {

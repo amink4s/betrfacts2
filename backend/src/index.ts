@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { query } from './db';
+import { createClient, Errors } from '@farcaster/quick-auth';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 4000;
+const quickAuthClient = createClient();
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', message: 'Betrmint backend running!' });
@@ -22,6 +24,34 @@ app.get('/test-db', async (_req, res) => {
   } catch (err) {
     const errorMsg = err instanceof Error ? err.message : String(err);
     res.status(500).json({ success: false, error: errorMsg });
+  }
+});
+
+app.get('/me', async (req, res) => {
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Missing token' });
+  }
+  try {
+    const payload = await quickAuthClient.verifyJwt({
+      token: auth.split(' ')[1],
+      domain: process.env.HOSTNAME || 'localhost',
+    });
+    const fid = payload.sub;
+    // Upsert user in DB (username is placeholder, replace with real if available)
+    const dbUser = await query(
+      `INSERT INTO users (id, username, role, points, contributions)
+       VALUES ($1, $2, 'user', 0, 0)
+       ON CONFLICT (id) DO UPDATE SET id=EXCLUDED.id
+       RETURNING *`,
+      [fid, `user${fid}`]
+    );
+    res.json(dbUser.rows[0]);
+  } catch (e) {
+    if (e instanceof Errors.InvalidTokenError) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
