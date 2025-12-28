@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient, Errors } from '@farcaster/quick-auth';
 const axios = require('axios');
-import { query } from './db';
+const { query } = require('./db.js');
 
 const quickAuthClient = createClient();
 
