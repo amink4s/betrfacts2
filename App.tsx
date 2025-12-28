@@ -6,12 +6,17 @@ import AdminDashboard from './pages/AdminDashboard';
 import Profile from './pages/Profile';
 import ContributeModal from './components/ContributeModal';
 import { User, BetrRound } from './types';
+import { sdk } from '@farcaster/miniapp-sdk';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null); // No default user
   const [rounds, setRounds] = useState<BetrRound[]>([]); // No default rounds
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    sdk.actions.ready();
+  }, []);
 
   const handleLogin = () => {
     // TODO: Integrate Farcaster QuickAuth
