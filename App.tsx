@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Feed from './pages/Feed';
 import AdminDashboard from './pages/AdminDashboard';
 import Profile from './pages/Profile';
+import ContributeModal from './components/ContributeModal';
 import { User, BetrRound } from './types';
 
 const App: React.FC = () => {
@@ -17,7 +18,13 @@ const App: React.FC = () => {
   };
 
   const handleAddRound = () => {
-    // TODO: Open contribution modal after backend integration
+    setIsModalOpen(true);
+  };
+
+  const handleContributeSubmit = (newRound: BetrRound) => {
+    setRounds(prev => [newRound, ...prev]);
+    setIsModalOpen(false);
+    // TODO: Send to backend instead of local state
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -58,6 +65,13 @@ const App: React.FC = () => {
           )}
         </Routes>
       </main>
+      <ContributeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleContributeSubmit}
+        user={user}
+        nextRoundNumber={rounds.length > 0 ? Math.max(...rounds.map(r => r.roundNumber)) + 1 : 1}
+      />
     </div>
   );
 };
