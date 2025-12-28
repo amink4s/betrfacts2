@@ -8,7 +8,7 @@ import ContributeModal from './components/ContributeModal';
 import { User, BetrRound } from './types';
 import { sdk } from '@farcaster/miniapp-sdk';
 
-const BACKEND_ORIGIN = 'http://localhost:4000';
+const BACKEND_ORIGIN = 'https://betr-facts.vercel.app';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null); // No default user
