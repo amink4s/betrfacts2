@@ -27,6 +27,8 @@ app.get('/test-db', async (_req, res) => {
   }
 });
 
+const axios = require('axios');
+
 app.get('/me', async (req, res) => {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith('Bearer ')) {
@@ -38,20 +40,31 @@ app.get('/me', async (req, res) => {
       domain: process.env.HOSTNAME || 'localhost',
     });
     const fid = payload.sub;
-    // Upsert user in DB (username is placeholder, replace with real if available)
+
+    // Fetch user profile from Neynar
+    const neynarApiKey = process.env.NEYNAR_API_KEY;
+    const neynarResp = await axios.get(
+      `https://api.neynar.com/v2/farcaster/user/bulk?fids=${fid}`,
+      { headers: { 'accept': 'application/json', 'api_key': neynarApiKey } }
+    );
+    const userData = neynarResp.data.users && neynarResp.data.users[0];
+    const username = userData?.username || `user${fid}`;
+    const pfp = userData?.pfp?.url || '';
+
+    // Upsert user in DB with real username and pfp
     const dbUser = await query(
-      `INSERT INTO users (id, username, role, points, contributions)
-       VALUES ($1, $2, 'user', 0, 0)
-       ON CONFLICT (id) DO UPDATE SET id=EXCLUDED.id
+      `INSERT INTO users (id, username, pfp, role, points, contributions)
+       VALUES ($1, $2, $3, 'user', 0, 0)
+       ON CONFLICT (id) DO UPDATE SET username=EXCLUDED.username, pfp=EXCLUDED.pfp
        RETURNING *`,
-      [fid, `user${fid}`]
+      [fid, username, pfp]
     );
     res.json(dbUser.rows[0]);
   } catch (e) {
     if (e instanceof Errors.InvalidTokenError) {
       return res.status(401).json({ error: 'Invalid token' });
     }
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: 'Server error', details: e.message });
   }
 });
 
