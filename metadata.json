@@ -1,0 +1,7 @@
+{
+  "name": "Betrmint Wiki Companion",
+  "description": "A casino-neon themed crowdsourced wiki for the Betrmint community to track rounds, earn points, and contribute to the ecosystem.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
