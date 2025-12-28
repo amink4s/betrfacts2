@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { User as UserIcon, Home, List, ShieldCheck, PlusCircle } from 'lucide-react';
@@ -23,16 +22,13 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogin }) => {
 
           <div className="hidden md:flex items-center gap-6">
             <NavLink to="/" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-fuchsia-500' : 'text-zinc-400 hover:text-white'}`}>
-              <Home size={18} />
               <span>Feed</span>
             </NavLink>
             <NavLink to="/rounds" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-fuchsia-500' : 'text-zinc-400 hover:text-white'}`}>
-              <List size={18} />
               <span>Rounds</span>
             </NavLink>
             {user?.role === 'admin' && (
               <NavLink to="/admin" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-cyan-500' : 'text-zinc-400 hover:text-white'}`}>
-                <ShieldCheck size={18} />
                 <span>Admin</span>
               </NavLink>
             )}
@@ -42,10 +38,10 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogin }) => {
         <div className="flex items-center gap-4">
           {user ? (
             <NavLink to="/profile" className="flex items-center gap-3 bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-fuchsia-500/30 p-1 pr-3 rounded-full transition-all group">
-              <img src={user.pfp} alt={user.username} className="w-8 h-8 rounded-full border border-zinc-700 group-hover:border-fuchsia-500 transition-colors" />
+              <img src={user.pfp || 'https://placehold.co/32x32'} alt={user.username} className="w-8 h-8 rounded-full border border-zinc-700 group-hover:border-fuchsia-500 transition-colors" />
               <div className="hidden sm:flex flex-col items-start leading-tight">
                 <span className="text-sm font-bold text-white">@{user.username}</span>
-                <span className="text-[10px] text-fuchsia-400 font-bold">{user.points.toLocaleString()} Karma</span>
+                <span className="text-[10px] text-fuchsia-400 font-bold">{user.points?.toLocaleString() ?? 0} Karma</span>
               </div>
             </NavLink>
           ) : (
@@ -53,7 +49,6 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogin }) => {
               onClick={onLogin}
               className="bg-fuchsia-600 hover:bg-fuchsia-500 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 transition-all orbitron text-xs shadow-[0_0_15px_rgba(217,70,239,0.4)]"
             >
-              <UserIcon size={14} />
               QUICKAUTH
             </button>
           )}

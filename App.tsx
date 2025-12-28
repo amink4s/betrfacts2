@@ -27,8 +27,13 @@ const App: React.FC = () => {
     })();
   }, []);
 
-  const handleLogin = () => {
-    // TODO: Integrate Farcaster QuickAuth
+  const handleLogin = async () => {
+    // Manual trigger for QuickAuth (for non-Farcaster browser use)
+    const res = await sdk.quickAuth.fetch(`${BACKEND_ORIGIN}/me`);
+    if (res.ok) {
+      const userData = await res.json();
+      setUser(userData);
+    }
   };
 
   const handleAddRound = () => {
