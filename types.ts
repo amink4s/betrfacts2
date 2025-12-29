@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   username: string;
@@ -14,6 +13,7 @@ export interface BetrRound {
   title: string;
   description: string;
   imageUrl: string;
+  nftLink?: string;
   submittedBy: string; // Username
   approved: boolean;
   timestamp: string;

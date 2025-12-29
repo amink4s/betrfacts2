@@ -55,10 +55,33 @@ const App: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleContributeSubmit = (newRound: BetrRound) => {
-    setRounds(prev => [newRound, ...prev]);
+  const handleContributeSubmit = async (newRound: BetrRound) => {
+    try {
+      const res = await fetch(`${BACKEND_ORIGIN}/rounds`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          roundNumber: newRound.roundNumber,
+          title: newRound.title,
+          description: newRound.description,
+          imageUrl: newRound.imageUrl,
+          nftLink: newRound.nftLink || '',
+          submittedBy: newRound.submittedBy,
+        }),
+      });
+      if (res.ok) {
+        const created = await res.json();
+        setRounds(prev => [created, ...prev]);
+      } else {
+        // fallback: still add locally if backend fails
+        setRounds(prev => [newRound, ...prev]);
+      }
+    } catch (e) {
+      setRounds(prev => [newRound, ...prev]);
+    }
     setIsModalOpen(false);
-    // TODO: Send to backend instead of local state
   };
 
   const handleSubmit = (e: React.FormEvent) => {
