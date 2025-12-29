@@ -23,7 +23,8 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
     title: '',
     artist: '',
     description: '',
-    image: ''
+    image: '',
+    tokenSupported: ''
   });
 
   if (!isOpen) return null;
@@ -41,7 +42,8 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
       submittedBy: user?.username || 'anonymous',
       approved: false,
       timestamp: new Date().toISOString(),
-      artist: formData.artist
+      artist: formData.artist,
+      tokenSupported: formData.tokenSupported
     };
     
     onSubmit(newRound);
@@ -51,7 +53,8 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
       title: '', 
       artist: '',
       description: '', 
-      image: '' 
+      image: '',
+      tokenSupported: ''
     });
   };
 
@@ -96,10 +99,22 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
             <input 
               type="text" 
               required
-              placeholder="e.g. artist.eth"
+              placeholder="e.g. @artist.eth"
               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-white outline-none focus:border-fuchsia-500"
               value={formData.artist}
               onChange={e => setFormData({...formData, artist: e.target.value})}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-zinc-500 uppercase orbitron">Token Supported</label>
+            <input 
+              type="text" 
+              required
+              placeholder="e.g. Betr, ETH, etc."
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-white outline-none focus:border-fuchsia-500"
+              value={formData.tokenSupported}
+              onChange={e => setFormData({...formData, tokenSupported: e.target.value})}
             />
           </div>
 
@@ -108,7 +123,7 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
             <textarea 
               required
               rows={4}
-              placeholder="Tell us what happened in this round..."
+              placeholder="round description"
               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-white outline-none focus:border-fuchsia-500 resize-none"
               value={formData.description}
               onChange={e => setFormData({...formData, description: e.target.value})}

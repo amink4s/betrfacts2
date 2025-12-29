@@ -15,6 +15,7 @@ export interface BetrRound {
   imageUrl: string;
   nftLink?: string;
   artist: string;
+  tokenSupported: string;
   submittedBy: string; // Username
   approved: boolean;
   timestamp: string;
