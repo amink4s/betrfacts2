@@ -24,9 +24,6 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogin = () => {} }) => {
             <NavLink to="/" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-fuchsia-500' : 'text-zinc-400 hover:text-white'}`}> 
               <span>Feed</span>
             </NavLink>
-            <NavLink to="/rounds" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-fuchsia-500' : 'text-zinc-400 hover:text-white'}`}> 
-              <span>Rounds</span>
-            </NavLink>
             {user?.role === 'admin' && (
               <NavLink to="/admin" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-cyan-500' : 'text-zinc-400 hover:text-white'}`}> 
                 <span>Admin</span>
