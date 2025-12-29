@@ -38,7 +38,7 @@ const Profile: React.FC<ProfileProps> = ({ user, userRounds }) => {
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="bg-black/40 border border-zinc-800 p-3 rounded-2xl">
-                <p className="text-zinc-500 text-[10px] uppercase font-bold mb-1 orbitron">Karma</p>
+                <p className="text-zinc-500 text-[10px] uppercase font-bold mb-1 orbitron">POINTS</p>
                 <p className="text-xl font-black text-white">{user.points.toLocaleString()}</p>
               </div>
               <div className="bg-black/40 border border-zinc-800 p-3 rounded-2xl">

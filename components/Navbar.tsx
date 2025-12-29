@@ -41,7 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogin }) => {
               <img src={user.pfp || 'https://placehold.co/32x32'} alt={user.username} className="w-8 h-8 rounded-full border border-zinc-700 group-hover:border-fuchsia-500 transition-colors" />
               <div className="hidden sm:flex flex-col items-start leading-tight">
                 <span className="text-sm font-bold text-white">@{user.username}</span>
-                <span className="text-[10px] text-fuchsia-400 font-bold">{user.points?.toLocaleString() ?? 0} Karma</span>
+                <span className="text-[10px] text-fuchsia-400 font-bold">{user.points?.toLocaleString() ?? 0} POINTS</span>
               </div>
             </NavLink>
           ) : (
