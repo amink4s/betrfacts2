@@ -51,6 +51,20 @@ const App: React.FC = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${BACKEND_ORIGIN}/rounds`);
+        if (res.ok) {
+          const allRounds = await res.json();
+          setRounds(allRounds);
+        }
+      } catch (e) {
+        // Optionally handle error
+      }
+    })();
+  }, []);
+
   const handleAddRound = () => {
     setIsModalOpen(true);
   };
@@ -89,13 +103,31 @@ const App: React.FC = () => {
     // TODO: Submit contribution to backend
   };
 
-  const handleApprove = (id: string) => {
-    setRounds(prev => prev.map(r => r.id === id ? { ...r, approved: true } : r));
-    // In a real app, update user points too
+  const handleApprove = async (id: string) => {
+    try {
+      const res = await fetch(`${BACKEND_ORIGIN}/rounds`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, approved: true }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setRounds(prev => prev.map(r => r.id === id ? updated : r));
+      }
+    } catch (e) {}
   };
 
-  const handleReject = (id: string) => {
-    setRounds(prev => prev.filter(r => r.id !== id));
+  const handleReject = async (id: string) => {
+    try {
+      const res = await fetch(`${BACKEND_ORIGIN}/rounds`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, approved: false }),
+      });
+      if (res.ok) {
+        setRounds(prev => prev.filter(r => r.id !== id));
+      }
+    } catch (e) {}
   };
 
   const pendingRounds = rounds.filter(r => !r.approved);

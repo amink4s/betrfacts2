@@ -31,7 +31,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ pendingRounds, onApprov
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-900">
-            {/* No template rows. Will be filled by backend data. */}
             {pendingRounds.length === 0 && (
               <tr>
                 <td colSpan={5} className="text-center py-10 text-zinc-500">
@@ -39,6 +38,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ pendingRounds, onApprov
                 </td>
               </tr>
             )}
+            {pendingRounds.map(round => (
+              <tr key={round.id}>
+                <td className="px-6 py-4 font-bold text-fuchsia-500">{round.roundNumber}</td>
+                <td className="px-6 py-4">@{round.submittedBy}</td>
+                <td className="px-6 py-4">{round.title}</td>
+                <td className="px-6 py-4">{new Date(round.timestamp).toLocaleDateString()}</td>
+                <td className="px-6 py-4 text-right">
+                  <NeonButton variant="cyan" size="sm" className="mr-2" onClick={() => onApprove(round.id)}>
+                    <Check size={16} /> Approve
+                  </NeonButton>
+                  <NeonButton variant="danger" size="sm" onClick={() => onReject(round.id)}>
+                    <X size={16} /> Reject
+                  </NeonButton>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
