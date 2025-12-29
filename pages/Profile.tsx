@@ -73,7 +73,6 @@ const Profile: React.FC<ProfileProps> = ({ user, userRounds }) => {
               </div>
               <div className="bg-black/40 border border-zinc-800 p-3 rounded-2xl">
                 <p className="text-zinc-500 text-[10px] uppercase font-bold mb-1 orbitron">Rewards</p>
-                <p className="text-xl font-black text-emerald-400">Claimable</p>
                 <button
                   className="mt-2 bg-fuchsia-600 hover:bg-fuchsia-500 text-white px-3 py-1 rounded text-xs font-bold"
                   disabled={!wallet || user.contributions === 0}
