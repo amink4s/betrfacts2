@@ -28,13 +28,22 @@ const App: React.FC = () => {
         const res = await fetch(`${BACKEND_ORIGIN}/me`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
+        let userData = null;
         if (res.ok) {
-          const userData = await res.json();
-          setUser(userData);
-          console.debug('QuickAuth userData:', userData);
+          userData = await res.json();
         } else {
           console.debug('QuickAuth fetch failed:', res.status, res.statusText);
         }
+        // Always try to get pfp from miniapp context if available
+        try {
+          const context = await sdk.context;
+          if (context?.user?.pfpUrl) {
+            userData = { ...userData, pfp: context.user.pfpUrl };
+          }
+        } catch (e) {
+          // context may not be available, fallback to backend pfp
+        }
+        setUser(userData);
       } catch (err) {
         console.error('QuickAuth error:', err);
       }
@@ -72,11 +81,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen pb-20">
-      {/* DEBUG: Show user object and error info */}
-      <div className="fixed top-16 right-0 z-50 bg-black/80 text-xs text-fuchsia-400 p-2 max-w-md overflow-x-auto border-l border-fuchsia-500/30">
-        <div>DEBUG user: {user ? JSON.stringify(user) : 'null'}</div>
-      </div>
-      
       <Navbar user={user} onLogin={undefined} />
       
       <main className="pt-24 px-4 sm:px-6 lg:px-8">
