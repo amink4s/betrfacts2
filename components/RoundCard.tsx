@@ -1,13 +1,35 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BetrRound } from '../types';
-import { Clock, User, CheckCircle, Info } from 'lucide-react';
+import { Clock, CheckCircle } from 'lucide-react';
+import axios from 'axios';
 
 interface RoundCardProps {
   round: BetrRound;
 }
 
 const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
+  const [artistPfp, setArtistPfp] = useState<string>('https://placehold.co/32x32');
+
+  useEffect(() => {
+    let ignore = false;
+    async function fetchPfp() {
+      if (!round.artist) return;
+      try {
+        // Try Neynar API for artist pfp
+        const resp = await axios.get(
+          `https://api.neynar.com/v2/farcaster/user-by-username?username=${encodeURIComponent(round.artist)}`,
+          { headers: { 'accept': 'application/json', 'api_key': process.env.NEYNAR_API_KEY || '' } }
+        );
+        const pfpUrl = resp.data?.user?.pfp?.url;
+        if (pfpUrl && !ignore) setArtistPfp(pfpUrl);
+      } catch (e) {
+        // fallback: keep placeholder
+      }
+    }
+    fetchPfp();
+    return () => { ignore = true; };
+  }, [round.artist]);
+
   return (
     <div className="bg-[#0a0a0a] border border-zinc-800 hover:border-fuchsia-500/50 rounded-xl overflow-hidden transition-all duration-300 group shadow-lg">
       <div className="relative aspect-video overflow-hidden">
@@ -41,9 +63,9 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
         <div className="flex items-center justify-between text-xs text-zinc-500 border-t border-zinc-800 pt-4">
           <div className="flex items-center gap-2">
             <div className="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center overflow-hidden">
-              <img src={`https://picsum.photos/seed/${round.submittedBy}/20`} alt="" />
+              <img src={artistPfp} alt={round.artist} />
             </div>
-            <span className="hover:text-white transition-colors cursor-pointer">@{round.submittedBy}</span>
+            <span className="hover:text-white transition-colors cursor-pointer">@{round.artist}</span>
           </div>
           <div className="flex items-center gap-1">
             <Clock size={12} />
