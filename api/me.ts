@@ -13,7 +13,7 @@ export default async function handler(req: any, res: any) {
   try {
     const payload = await quickAuthClient.verifyJwt({
       token: auth.split(' ')[1],
-      domain: process.env.HOSTNAME || 'localhost',
+      domain: 'betr-facts.vercel.app', // <-- hardcoded for production
     });
     const fid = payload.sub;
     // Fetch user profile from Neynar
