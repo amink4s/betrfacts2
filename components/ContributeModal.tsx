@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { X, Upload, Info } from 'lucide-react';
 import NeonButton from './NeonButton';
@@ -22,6 +21,7 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
   const [formData, setFormData] = useState({
     roundNumber: nextRoundNumber,
     title: '',
+    artist: '',
     description: '',
     image: ''
   });
@@ -37,9 +37,11 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
       title: formData.title,
       description: formData.description,
       imageUrl: formData.image || `https://picsum.photos/seed/${Math.random()}/600/400`,
+      nftLink: '',
       submittedBy: user?.username || 'anonymous',
       approved: false,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      artist: formData.artist
     };
     
     onSubmit(newRound);
@@ -47,6 +49,7 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
     setFormData({ 
       roundNumber: formData.roundNumber + 1, 
       title: '', 
+      artist: '',
       description: '', 
       image: '' 
     });
@@ -86,6 +89,18 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
                 onChange={e => setFormData({...formData, title: e.target.value})}
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-zinc-500 uppercase orbitron">Artist Username</label>
+            <input 
+              type="text" 
+              required
+              placeholder="e.g. artist.eth"
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-white outline-none focus:border-fuchsia-500"
+              value={formData.artist}
+              onChange={e => setFormData({...formData, artist: e.target.value})}
+            />
           </div>
 
           <div className="space-y-2">
