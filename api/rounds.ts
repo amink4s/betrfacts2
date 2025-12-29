@@ -3,6 +3,16 @@ import { query } from './db.mjs';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'POST') {
+    // Parse JSON body if needed (Vercel Node does not always do this automatically)
+    if (req.headers['content-type'] === 'application/json' && typeof req.body === 'string') {
+      try {
+        req.body = JSON.parse(req.body);
+      } catch (e) {
+        return res.status(400).json({ error: 'Invalid JSON' });
+      }
+    }
+    // Log the incoming body for debugging
+    console.log('POST /api/rounds body:', req.body);
     // Create a new round/contribution
     const { roundNumber, title, description, imageUrl, artist, tokenSupported, submittedBy } = req.body;
     if (!title || !description || !imageUrl || !submittedBy || !artist || !tokenSupported) {
@@ -17,6 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       );
       return res.status(201).json(dbRes.rows[0]);
     } catch (e: any) {
+      console.error('DB Insert Error:', e);
       return res.status(500).json({ error: 'Failed to create round', details: e.message });
     }
   } else if (req.method === 'GET') {
