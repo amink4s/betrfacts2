@@ -27,7 +27,8 @@ const Profile: React.FC<ProfileProps> = ({ user, userRounds }) => {
           setFactsBalance(bal);
         }
       } catch (e) {
-        setFactsBalance(null);
+        console.error('Error fetching $FACTS balance:', e);
+        setFactsBalance('Unable to load');
       }
     })();
   }, []);
