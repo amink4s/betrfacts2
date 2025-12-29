@@ -99,7 +99,7 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
             <input 
               type="text" 
               required
-              placeholder="e.g. @artist.eth"
+              placeholder="e.g. artist.eth"
               className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-white outline-none focus:border-fuchsia-500"
               value={formData.artist}
               onChange={e => setFormData({...formData, artist: e.target.value})}

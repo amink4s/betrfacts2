@@ -5,10 +5,10 @@ import { User } from '../types';
 
 interface NavbarProps {
   user: User | null;
-  onLogin: () => void;
+  onLogin?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ user, onLogin }) => {
+const Navbar: React.FC<NavbarProps> = ({ user, onLogin = () => {} }) => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-fuchsia-500/20">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -20,15 +20,15 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogin }) => {
             <span className="hidden sm:block text-xl font-black orbitron bg-gradient-to-r from-fuchsia-500 to-cyan-500 bg-clip-text text-transparent">BETRMINT WIKI</span>
           </NavLink>
 
-          <div className="hidden md:flex items-center gap-6">
-            <NavLink to="/" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-fuchsia-500' : 'text-zinc-400 hover:text-white'}`}>
+          <div className="flex items-center gap-6">
+            <NavLink to="/" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-fuchsia-500' : 'text-zinc-400 hover:text-white'}`}> 
               <span>Feed</span>
             </NavLink>
-            <NavLink to="/rounds" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-fuchsia-500' : 'text-zinc-400 hover:text-white'}`}>
+            <NavLink to="/rounds" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-fuchsia-500' : 'text-zinc-400 hover:text-white'}`}> 
               <span>Rounds</span>
             </NavLink>
             {user?.role === 'admin' && (
-              <NavLink to="/admin" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-cyan-500' : 'text-zinc-400 hover:text-white'}`}>
+              <NavLink to="/admin" className={({ isActive }) => `flex items-center gap-1 transition-colors ${isActive ? 'text-cyan-500' : 'text-zinc-400 hover:text-white'}`}> 
                 <span>Admin</span>
               </NavLink>
             )}

@@ -147,7 +147,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen pb-20">
-      <Navbar user={user} onLogin={undefined} />
+      <Navbar user={user} onLogin={() => {}} />
       
       <main className="pt-24 px-4 sm:px-6 lg:px-8">
         <Routes>
