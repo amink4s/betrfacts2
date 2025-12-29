@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { User, BetrRound } from '../types';
-import { Trophy, Gift, Share2, ArrowUpRight } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import NeonButton from '../components/NeonButton';
+import { getFactsBalance } from '../utils/getFactsBalance';
+import { sdk } from '@farcaster/miniapp-sdk';
 
 interface ProfileProps {
   user: User;
@@ -9,6 +11,27 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = ({ user, userRounds }) => {
+  const [factsBalance, setFactsBalance] = useState<string | null>(null);
+  const [wallet, setWallet] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        // Get wallet address from Farcaster context
+        const context = await sdk.context;
+        // Try to get wallet from context.user.wallet or context.user.address
+        const address = (context.user as any)?.wallet || (context.user as any)?.address;
+        if (address) {
+          setWallet(address);
+          const bal = await getFactsBalance(address);
+          setFactsBalance(bal);
+        }
+      } catch (e) {
+        setFactsBalance(null);
+      }
+    })();
+  }, []);
+
   return (
     <div className="max-w-4xl mx-auto py-8">
       <div className="bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-3xl p-8 mb-8 relative overflow-hidden shadow-2xl">
@@ -19,9 +42,6 @@ const Profile: React.FC<ProfileProps> = ({ user, userRounds }) => {
           <div className="relative">
             <div className="w-32 h-32 rounded-3xl border-4 border-fuchsia-500 shadow-[0_0_20px_rgba(217,70,239,0.5)] overflow-hidden">
               <img src={user.pfp} alt={user.username} className="w-full h-full object-cover" />
-            </div>
-            <div className="absolute -bottom-2 -right-2 bg-black border border-fuchsia-500 px-3 py-1 rounded-lg text-xs font-black text-fuchsia-500 orbitron">
-              RANK #12
             </div>
           </div>
 
@@ -46,8 +66,10 @@ const Profile: React.FC<ProfileProps> = ({ user, userRounds }) => {
                 <p className="text-xl font-black text-white">{user.contributions}</p>
               </div>
               <div className="bg-black/40 border border-zinc-800 p-3 rounded-2xl">
-                <p className="text-zinc-500 text-[10px] uppercase font-bold mb-1 orbitron">$BETR Share</p>
-                <p className="text-xl font-black text-cyan-400">0.02%</p>
+                <p className="text-zinc-500 text-[10px] uppercase font-bold mb-1 orbitron">$FACTS Holdings</p>
+                <p className="text-xl font-black text-cyan-400">
+                  {factsBalance === null ? 'Loading...' : factsBalance}
+                </p>
               </div>
               <div className="bg-black/40 border border-zinc-800 p-3 rounded-2xl">
                 <p className="text-zinc-500 text-[10px] uppercase font-bold mb-1 orbitron">Rewards</p>
