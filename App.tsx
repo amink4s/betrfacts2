@@ -57,6 +57,7 @@ const App: React.FC = () => {
         const res = await fetch(`${BACKEND_ORIGIN}/rounds`);
         if (res.ok) {
           const allRounds = await res.json();
+          console.log('Fetched rounds from backend:', allRounds); // Debug log
           setRounds(allRounds);
         }
       } catch (e) {
