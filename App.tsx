@@ -11,8 +11,8 @@ import { sdk } from '@farcaster/miniapp-sdk';
 const BACKEND_ORIGIN = '/api';
 
 const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null); // No default user
-  const [rounds, setRounds] = useState<BetrRound[]>([]); // No default rounds
+  const [user, setUser] = useState<User | null>(null); 
+  const [rounds, setRounds] = useState<BetrRound[]>([]); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
