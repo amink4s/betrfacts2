@@ -57,8 +57,21 @@ const App: React.FC = () => {
         const res = await fetch(`${BACKEND_ORIGIN}/rounds`);
         if (res.ok) {
           const allRounds = await res.json();
-          console.log('Fetched rounds from backend:', allRounds); // Debug log
-          setRounds(allRounds);
+          // Map snake_case to camelCase for frontend
+          const mappedRounds = allRounds.map((r: any) => ({
+            id: r.id,
+            roundNumber: r.round_number,
+            title: r.title,
+            description: r.description,
+            imageUrl: r.image_url,
+            artist: r.artist,
+            tokenSupported: r.token_supported,
+            submittedBy: r.submitted_by,
+            approved: r.approved,
+            timestamp: r.timestamp,
+          }));
+          console.log('Mapped rounds:', mappedRounds);
+          setRounds(mappedRounds);
         }
       } catch (e) {
         // Optionally handle error
@@ -99,11 +112,6 @@ const App: React.FC = () => {
       setRounds(prev => [newRound, ...prev]);
     }
     setIsModalOpen(false);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Submit contribution to backend
   };
 
   const handleApprove = async (id: string) => {
