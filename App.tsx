@@ -18,21 +18,34 @@ const App: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await sdk.quickAuth.fetch(`${BACKEND_ORIGIN}/me`);
-      if (res.ok) {
-        const userData = await res.json();
-        setUser(userData);
+      try {
+        const res = await sdk.quickAuth.fetch(`${BACKEND_ORIGIN}/me`);
+        if (res.ok) {
+          const userData = await res.json();
+          setUser(userData);
+          console.debug('QuickAuth userData:', userData);
+        } else {
+          console.debug('QuickAuth fetch failed:', res.status, res.statusText);
+        }
+      } catch (err) {
+        console.error('QuickAuth error:', err);
       }
       sdk.actions.ready();
     })();
   }, []);
 
   const handleLogin = async () => {
-    // Manual trigger for QuickAuth (for non-Farcaster browser use)
-    const res = await sdk.quickAuth.fetch(`${BACKEND_ORIGIN}/me`);
-    if (res.ok) {
-      const userData = await res.json();
-      setUser(userData);
+    try {
+      const res = await sdk.quickAuth.fetch(`${BACKEND_ORIGIN}/me`);
+      if (res.ok) {
+        const userData = await res.json();
+        setUser(userData);
+        console.debug('Manual QuickAuth userData:', userData);
+      } else {
+        console.debug('Manual QuickAuth fetch failed:', res.status, res.statusText);
+      }
+    } catch (err) {
+      console.error('Manual QuickAuth error:', err);
     }
   };
 
@@ -66,6 +79,11 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen pb-20">
+      {/* DEBUG: Show user object and error info */}
+      <div className="fixed top-16 right-0 z-50 bg-black/80 text-xs text-fuchsia-400 p-2 max-w-md overflow-x-auto border-l border-fuchsia-500/30">
+        <div>DEBUG user: {user ? JSON.stringify(user) : 'null'}</div>
+      </div>
+      
       <Navbar user={user} onLogin={handleLogin} />
       
       <main className="pt-24 px-4 sm:px-6 lg:px-8">
