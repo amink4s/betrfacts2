@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { ethers } from 'ethers';
 
 const FACTS_TOKEN_ADDRESS = '0x97fad6f41377eb5a530e9652818a3deb31d12b07';
@@ -11,7 +11,7 @@ const FACTS_FAUCET_PK = process.env.FACTS_FAUCET_PK!; // Set this in Vercel
 const FACTS_FAUCET_ADDRESS = process.env.FACTS_FAUCET_ADDRESS!; // Set this in Vercel
 const BASE_RPC = 'https://mainnet.base.org';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const { address, contributions } = req.body;
   if (!address || !contributions) return res.status(400).json({ error: 'Missing address or contributions' });

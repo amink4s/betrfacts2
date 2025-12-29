@@ -70,6 +70,26 @@ const Profile: React.FC<ProfileProps> = ({ user, userRounds }) => {
                 <p className="text-xl font-black text-cyan-400">
                   {factsBalance === null ? 'Loading...' : factsBalance}
                 </p>
+                <button
+                  className="mt-2 bg-fuchsia-600 hover:bg-fuchsia-500 text-white px-3 py-1 rounded text-xs font-bold"
+                  disabled={!wallet || user.contributions === 0}
+                  onClick={async () => {
+                    if (!wallet) return;
+                    const res = await fetch('/api/claim-facts', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ address: wallet, contributions: user.contributions })
+                    });
+                    if (res.ok) {
+                      alert('Claim successful!');
+                    } else {
+                      const data = await res.json();
+                      alert('Claim failed: ' + (data.error || 'Unknown error'));
+                    }
+                  }}
+                >
+                  Claim {user.contributions * 1_000_000} $FACTS
+                </button>
               </div>
               <div className="bg-black/40 border border-zinc-800 p-3 rounded-2xl">
                 <p className="text-zinc-500 text-[10px] uppercase font-bold mb-1 orbitron">Rewards</p>
