@@ -143,6 +143,7 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
               />
             </div>
           </div>
+          <NeonButton type="submit" className="w-full py-4 text-lg">POST CONTRIBUTION</NeonButton>
 
           <div className="bg-fuchsia-500/5 border border-fuchsia-500/20 p-4 rounded-2xl flex gap-3">
             <Info size={20} className="text-fuchsia-500 shrink-0" />
@@ -151,7 +152,6 @@ const ContributeModal: React.FC<ContributeModalProps> = ({
             </p>
           </div>
 
-          <NeonButton type="submit" className="w-full py-4 text-lg">POST CONTRIBUTION</NeonButton>
         </form>
       </div>
     </div>
