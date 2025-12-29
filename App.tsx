@@ -10,7 +10,7 @@ import { sdk } from '@farcaster/miniapp-sdk';
 
 // IMPORTANT: Use your full backend URL in production or on Vercel
 // Example: const BACKEND_ORIGIN = 'https://your-backend.vercel.app/api';
-const BACKEND_ORIGIN = 'https://betr-facts.vercel.app/api';
+const BACKEND_ORIGIN = '/api';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null); 
