@@ -8,8 +8,7 @@ import ContributeModal from './components/ContributeModal';
 import { User, BetrRound } from './types';
 import { sdk } from '@farcaster/miniapp-sdk';
 
-// IMPORTANT: Use your full backend URL in production or on Vercel
-// Example: const BACKEND_ORIGIN = 'https://your-backend.vercel.app/api';
+
 const BACKEND_ORIGIN = '/api';
 
 const App: React.FC = () => {
@@ -21,7 +20,14 @@ const App: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await sdk.quickAuth.fetch(`${BACKEND_ORIGIN}/me`);
+        const { token } = await sdk.quickAuth.getToken();
+        if (!token) {
+          console.error('No QuickAuth token received');
+          return;
+        }
+        const res = await fetch(`${BACKEND_ORIGIN}/me`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
         if (res.ok) {
           const userData = await res.json();
           setUser(userData);
@@ -35,21 +41,6 @@ const App: React.FC = () => {
       sdk.actions.ready();
     })();
   }, []);
-
-  const handleLogin = async () => {
-    try {
-      const res = await sdk.quickAuth.fetch(`${BACKEND_ORIGIN}/me`);
-      if (res.ok) {
-        const userData = await res.json();
-        setUser(userData);
-        console.debug('Manual QuickAuth userData:', userData);
-      } else {
-        console.debug('Manual QuickAuth fetch failed:', res.status, res.statusText);
-      }
-    } catch (err) {
-      console.error('Manual QuickAuth error:', err);
-    }
-  };
 
   const handleAddRound = () => {
     setIsModalOpen(true);
@@ -86,7 +77,7 @@ const App: React.FC = () => {
         <div>DEBUG user: {user ? JSON.stringify(user) : 'null'}</div>
       </div>
       
-      <Navbar user={user} onLogin={handleLogin} />
+      <Navbar user={user} onLogin={undefined} />
       
       <main className="pt-24 px-4 sm:px-6 lg:px-8">
         <Routes>
