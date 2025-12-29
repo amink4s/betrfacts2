@@ -82,6 +82,8 @@ const App: React.FC = () => {
           description: newRound.description,
           imageUrl: newRound.imageUrl,
           nftLink: newRound.nftLink || '',
+          artist: newRound.artist,
+          tokenSupported: newRound.tokenSupported,
           submittedBy: newRound.submittedBy,
         }),
       });
