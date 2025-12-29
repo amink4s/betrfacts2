@@ -49,11 +49,14 @@ const Feed: React.FC<FeedProps> = ({ rounds, onAddRound }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* No template cards. Will be filled by backend data. */}
-        {filteredRounds.length === 0 && (
+        {filteredRounds.length === 0 ? (
           <div className="text-center py-20 border-2 border-dashed border-zinc-800 rounded-2xl">
             No rounds found.
           </div>
+        ) : (
+          filteredRounds.map(round => (
+            <RoundCard key={round.id} round={round} />
+          ))
         )}
       </div>
     </div>
